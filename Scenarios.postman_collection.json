@@ -1,0 +1,810 @@
+{
+  "info": {
+    "_postman_id": "9d7f7df5-febe-4c3d-ae8a-ce067f2390b6",
+    "name": "Scenarios",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54802386",
+    "_collection_link": "https://go.postman.co/collection/54802386-9d7f7df5-febe-4c3d-ae8a-ce067f2390b6?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Search Movies by Keyword",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code equal 200 ok\",function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              " let responsejson= pm.response.json();\r",
+              " pm.test(\"Results arrays is not empty\",function(){\r",
+              "    pm.expect(responsejson.Results ).to.not.be.null;\r",
+              " });\r",
+              "\r",
+              "pm.test(\"Validate that movie titles are relevant to the search keyword\",function(){\r",
+              "    pm.expect(responsejson.titles).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate Results includes id and not empty\",function(){\r",
+              "    pm.expect(responsejson.id).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate Results includes release_date and not empty\",function(){\r",
+              "    pm.expect(responsejson.release_date).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate Results includes overview and not empty\",function(){\r",
+              "    pm.expect(responsejson.overview).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Confirm total_results > 0\",function(){\r",
+              "    pm.expect(responsejson.total_results).to.be.above(0);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{Base_Url}}/search/movie?query=inception&language=en-US ",
+          "host": [
+            "{{Base_Url}}"
+          ],
+          "path": [
+            "search",
+            "movie"
+          ],
+          "query": [
+            {
+              "key": "query",
+              "value": "inception"
+            },
+            {
+              "key": "language",
+              "value": "en-US "
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search TV Shows by Name",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code is 200\",function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "let responsejson=pm.response.json();\r",
+              "pm.test(\"response includes at least one item\",function(){\r",
+              "pm.expect(responsejson.results.length).to.be.at.least(1);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate each result includes id\",function(){\r",
+              "        pm.expect(responsejson.results.every(result=> result.id)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Validate each result includes name\",function(){\r",
+              "        pm.expect(responsejson.results.every(result=> result.name)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Validate each result includes overview \",function(){\r",
+              "        pm.expect(responsejson.results.every(result=> result.overview)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate results are not empty\",function(){\r",
+              "    pm.expect(responsejson.results).to.be.not.null;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{Base_Url}}/search/tv?query=breaking+bad&la nguage=en-US ",
+          "host": [
+            "{{Base_Url}}"
+          ],
+          "path": [
+            "search",
+            "tv"
+          ],
+          "query": [
+            {
+              "key": "query",
+              "value": "breaking+bad"
+            },
+            {
+              "key": "la nguage",
+              "value": "en-US "
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Movie Details by Movie ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code is 200\",function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "let responsejson=pm.response.json();\r",
+              "pm.test(\"Validate presence of title\",function(){\r",
+              "    pm.expect(responsejson.title).to.eql(\"Obsession\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence of overview\",function(){\r",
+              "    pm.expect(responsejson.overview).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence of release_date\",function(){\r",
+              "    pm.expect(responsejson.release_date).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence of runtime\",function(){\r",
+              "    pm.expect(responsejson.runtime).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"genres array is not empty\",function(){\r",
+              "    pm.expect(responsejson.genres.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate production_companies is present \",function(){\r",
+              "    pm.expect(responsejson.production_companies.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Confirm budget and revenue fields exist\",function(){\r",
+              "    pm.expect(responsejson.budget).to.greaterThanOrEqual(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence of genres\",function(){\r",
+              "    pm.expect(responsejson.genres.length).to.be.greaterThan(0);\r",
+              "    });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{Base_Url}}/movie/1339713",
+          "host": [
+            "{{Base_Url}}"
+          ],
+          "path": [
+            "movie",
+            "1339713"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Movie Credits (Cast & Crew)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code is 200\",function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "let responsejson=pm.response.json();\r",
+              "\r",
+              "pm.test(\"Response includes cast[] \",function(){\r",
+              "    pm.expect(responsejson.cast.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response includes crew[] \",function(){\r",
+              "    pm.expect(responsejson.crew.length).to.be.above(0);\r",
+              "}); \r",
+              "\r",
+              "pm.test(\"Validate each cast includes id \",function(){\r",
+              "        pm.expect(responsejson.cast.every(result=> result.id)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate each cast includes name \",function(){\r",
+              "        pm.expect(responsejson.cast.every(result=> result.name)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate each cast includes character \",function(){\r",
+              "        pm.expect(responsejson.cast.every(result=> result.character)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate each cast includes order \",function(){\r",
+              "        pm.expect(responsejson.cast.every(result=> result.order)).to.be.false;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate each crew member includes: id \",function(){\r",
+              "    pm.expect(responsejson.crew.id).to.be.not.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate each crew member includes: name \",function(){\r",
+              "    pm.expect(responsejson.crew.name).to.be.not.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate each crew member includes: job \",function(){\r",
+              "    pm.expect(responsejson.crew.job).to.be.not.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate each crew member includes: department \",function(){\r",
+              "    pm.expect(responsejson.crew.department).to.be.not.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Confirm cast list is not empty\",function(){\r",
+              "    pm.expect(responsejson.cast.length).to.be.not.null;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{json_web_token}}"
+          },
+          {
+            "key": "accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{Base_Url}}/movie/1282354/credits?language=en-US",
+          "host": [
+            "{{Base_Url}}"
+          ],
+          "path": [
+            "movie",
+            "1282354",
+            "credits"
+          ],
+          "query": [
+            {
+              "key": "language",
+              "value": "en-US"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Popular Movies",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code is 200\",function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "let responsejson=pm.response.json();\r",
+              "\r",
+              "pm.test(\"Response contains results[] with 20 items per page\",function(){\r",
+              "    pm.expect(responsejson.results.length).to.eql(20);\r",
+              "}); \r",
+              "\r",
+              "pm.test(\"Validate presence of: page \",function(){\r",
+              "    pm.expect(responsejson.page).to.be.not.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence of:total_pages\",function(){\r",
+              "    pm.expect(responsejson.total_pages).to.be.not.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence of:total_results\",function(){\r",
+              "    pm.expect(responsejson.total_results).to.be.not.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each movie includes: id \",function(){\r",
+              "        pm.expect(responsejson.results.every(result=> result.id)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each movie includes:title \",function(){\r",
+              "        pm.expect(responsejson.results.every(result=> result.title)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each movie includes: vote_average \",function(){\r",
+              "        pm.expect(responsejson.results.every(result=> result.vote_average)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each movie includes: popularity \",function(){\r",
+              "        pm.expect(responsejson.results.every(result=> result.popularity)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence of:total_results\",function(){\r",
+              "    pm.expect(responsejson.results.popularity).to.ordered;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{Base_Url}}/movie/popular?language=en-US&pa ge=1 ",
+          "host": [
+            "{{Base_Url}}"
+          ],
+          "path": [
+            "movie",
+            "popular"
+          ],
+          "query": [
+            {
+              "key": "language",
+              "value": "en-US"
+            },
+            {
+              "key": "pa ge",
+              "value": "1 "
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get TV Show Details by ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code equal 200 ok\",function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              " let responsejson= pm.response.json();\r",
+              "\r",
+              " pm.test(\"Validate presence of: name\",function(){\r",
+              "    pm.expect(responsejson.name).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence of: overview,\",function(){\r",
+              "    pm.expect(responsejson.overview).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence of: first_air_date \",function(){\r",
+              "    pm.expect(responsejson.first_air_date).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence of: number_of_seasons\",function(){\r",
+              "    pm.expect(responsejson.number_of_seasons).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"genres array is not empty\",function(){\r",
+              "    pm.expect(responsejson.genres.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Confirm episode_run_time[] field exists \",function(){\r",
+              "    pm.expect(responsejson.episode_run_time.length).to.be.not.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate networks[] is present \",function(){\r",
+              "    pm.expect(responsejson.networks.length).to.be.not.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate created_by[] is present \",function(){\r",
+              "    pm.expect(responsejson.created_by.length).to.be.not.null;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{Base_Url}}/tv/124364",
+          "host": [
+            "{{Base_Url}}"
+          ],
+          "path": [
+            "tv",
+            "124364"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Movie Genres List",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code is 200\",function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "let responsejson=pm.response.json();\r",
+              "pm.test(\"Response includes genres array\", function () {\r",
+              "    pm.expect(responsejson.genres).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Genres list is not empty\", function () {\r",
+              "    pm.expect(responsejson.genres).to.not.be.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each genre has id and name fields \",function(){\r",
+              "        \r",
+              "        pm.expect(responsejson.genres.every(result=> result.id)).to.be.true;\r",
+              "        pm.expect(responsejson.genres.every(result=> result.name)).to.be.true;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expected genres are present (Action, Comedy, Drama) \",function(){\r",
+              "        pm.expect(responsejson.genres.action).to.not.be.null;\r",
+              "        pm.expect(responsejson.genres.comedy).to.not.be.null;\r",
+              "        pm.expect(responsejson.genres.drama).to.not.be.null;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{Base_Url}}/genre/movie/list?language=en\n",
+          "host": [
+            "{{Base_Url}}"
+          ],
+          "path": [
+            "genre",
+            "movie",
+            "list"
+          ],
+          "query": [
+            {
+              "key": "language",
+              "value": "en\n"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Discover Movies by Genre",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code equal 200 ok\",function(){\r",
+              "        \r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              " let responseJson= pm.response.json();\r",
+              "\r",
+              " pm.test(\"Response contains results array\", function () {\r",
+              "    pm.expect(responseJson.results).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Results array is not empty\", function () {\r",
+              "    pm.expect(responseJson.results.length).to.be.not.not;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate each movie includes: id, title, genre_ids[], vote_average\",function(){\r",
+              "        pm.expect(responseJson.results.every(result=> result.id)).to.be.true;\r",
+              "        pm.expect(responseJson.results.every(result=> result.title)).to.be.true;\r",
+              "          pm.expect(responseJson.results.every(result=> result.genre_ids)).to.be.true;\r",
+              "        pm.expect(responseJson.results.every(result=> result.vote_average)).to.be.false;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each movie contains the requested genre_id\", function () {\r",
+              "        pm.expect(responseJson.results.every(result=> result.genre_id)).to.be.false;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Pagination field page is present\", function () {\r",
+              "    pm.expect(responseJson.page).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Pagination field total_pages is present\", function () {\r",
+              "    pm.expect(responseJson.total_pages).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Pagination field total_results is present\", function () {\r",
+              "    pm.expect(responseJson.total_results).to.not.be.null;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{Base_Url}}/discover/movie?with_genres=28&sort_by=popularity.desc ",
+          "host": [
+            "{{Base_Url}}"
+          ],
+          "path": [
+            "discover",
+            "movie"
+          ],
+          "query": [
+            {
+              "key": "with_genres",
+              "value": "28"
+            },
+            {
+              "key": "sort_by",
+              "value": "popularity.desc "
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Now Playing Movies",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code equal 200 ok\",function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              " let responseJson= pm.response.json();\r",
+              "\r",
+              "  pm.test(\"Response contains results[] and dates{} object\",function(){\r",
+              "    pm.expect(responseJson.results.length).to.not.be.null;\r",
+              "    pm.expect(responseJson.dates.length).to.not.be.null;\r",
+              " });\r",
+              "\r",
+              " pm.test(\"dates has maximum field\", function () {\r",
+              "    pm.expect(responseJson.dates.maximum).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"dates has minimum field\", function () {\r",
+              "    pm.expect(responseJson.dates.minimum).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each movie includes: id, title, release_date, vote_count \",function(){\r",
+              "        pm.expect(responseJson.results.every(result=> result.id)).to.be.true;\r",
+              "        pm.expect(responseJson.results.every(result=> result.title)).to.be.true;\r",
+              "        pm.expect(responseJson.results.every(result=> result.release_date)).to.be.true;\r",
+              "        pm.expect(responseJson.results.every(result=> result.vote_count)).to.be.true;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{Base_Url}}/movie/now_playing?language=en-U S&page=1 ",
+          "host": [
+            "{{Base_Url}}"
+          ],
+          "path": [
+            "movie",
+            "now_playing"
+          ],
+          "query": [
+            {
+              "key": "language",
+              "value": "en-U S"
+            },
+            {
+              "key": "page",
+              "value": "1 "
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Person Details (Actor/Director)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code equal 200 ok\",function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              " let responsejson= pm.response.json();\r",
+              "\r",
+              "pm.test(\"Validate presence of: name, biography, birthday, place_of_birth \", function () {\r",
+              "    pm.expect(responsejson.name).to.not.be.null;\r",
+              "    pm.expect(responsejson.biography).to.not.be.null;\r",
+              "    pm.expect(responsejson.birthday).to.not.be.null;\r",
+              "    pm.expect(responsejson.place_of_birth).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Confirm known_for_department field exists \", function () {\r",
+              "pm.expect(responsejson.known_for_department).to.exist;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate popularity score is a number\", function () {\r",
+              "    pm.expect(responsejson.popularity).to.be.a(\"number\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Confirm also_known_as[] array is present \", function () {\r",
+              "    pm.expect(responsejson.also_known_as).to.not.be.null;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{Base_Url}}/person/525",
+          "host": [
+            "{{Base_Url}}"
+          ],
+          "path": [
+            "person",
+            "525"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Movie to Watchlist",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"status code is 201\",function(){\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "let responsejson=pm.response.json();\r",
+              "pm.test(\"success is true\",function(){\r",
+              "    pm.expect(responsejson.success).to.eql(true);\r",
+              "    });\r",
+              "\r",
+              "    pm.test(\"Validate status_message confirms The item/record was updated successfully\",function(){\r",
+              "        pm.expect(responsejson.status_message).to.eql(\"The item/record was updated successfully.\");\r",
+              "    });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{json_web_token}}"
+          },
+          {
+            "key": "accept",
+            "value": "application/json"
+          },
+          {
+            "key": "content-type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "\n{\n  \"media_type\": \"movie\",\n  \"media_id\": 550,\n  \"watchlist\": true\n}\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{Base_Url}}/account/23326391/watchlist",
+          "host": [
+            "{{Base_Url}}"
+          ],
+          "path": [
+            "account",
+            "23326391",
+            "watchlist"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{Bearer_Token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
